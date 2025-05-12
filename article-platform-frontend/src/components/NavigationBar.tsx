@@ -36,7 +36,7 @@
       // Content for the dropdown menu items (reused for both dropdown versions)
       const dropdownItems = (
         <>
-          <NavDropdown.Header className="custom-nav-dropdown-header" style={{ textAlign: 'center', fontSize: '1rem', fontWeight: 'bold' }}>
+          <NavDropdown.Header className="custom-nav-dropdown-header" style={{ textAlign: 'center', fontSize: '1rem', fontWeight: 'bold', color: '#34d399' }}>
             Hello, {user?.firstName || user?.email?.split('@')[0]}
           </NavDropdown.Header>
           <NavDropdown.Divider />
@@ -70,8 +70,8 @@
               aria-label="Go to homepage"
               className="custom-nav-brand"
             >
-              <Book size={28} className="me-2" />
-              <span className="fw-bold">Article Platform</span>
+              <Book size={20} className="me-2" />
+              <span className="fw-bold">Articulate</span>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

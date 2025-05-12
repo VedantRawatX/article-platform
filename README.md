@@ -142,3 +142,20 @@ npm run dev
 ```
 
 > The frontend will typically run on http://localhost:5173 
+
+# Log-In Credentials
+
+## Admin Credentials
+
+> **Username:** admin@example.com
+> **Password:** Password123!
+
+## User Credentials
+
+> **Username:** user1@example.com
+> **Password:** Password123!
+
+> **Username:** user2@example.com
+> **Password:** Password123!
+
+### You can also create your own user via the Register Form

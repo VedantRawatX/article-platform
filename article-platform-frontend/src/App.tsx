@@ -1,32 +1,28 @@
     // File: src/App.tsx
-    import React, { useState } from 'react'; // Removed useRef
-    import './index.css'; // CSS for transitions will be removed from here or the specific file
+    import React, { useState } from 'react';
+    import './index.css';
 
     import Container from 'react-bootstrap/Container';
     import Button from 'react-bootstrap/Button';
     import Navbar from 'react-bootstrap/Navbar';
-    import { Routes, Route, useNavigation, Outlet } from 'react-router-dom'; // useLocation removed as it was for CSSTransition key
+    import { Routes, Route } from 'react-router-dom';
     import { LinkContainer } from 'react-router-bootstrap';
     import { BookmarkHeartFill, ChatDotsFill } from 'react-bootstrap-icons';
-    // CSSTransition and TransitionGroup are removed
-    // import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
     import NavigationBar from './components/NavigationBar';
     import ProtectedRoute from './components/ProtectedRoute';
     import SavedArticlesSidebar from './components/shared/SavedArticlesSidebar';
-    import ChatSidebar from './components/shared/ChatSidebar';
     import ToastContainerComponent from './components/shared/ToastContainerComponent';
-    import TopProgressBar from './components/shared/TopProgressBar'; // Will remove this component usage
+    import TopProgressBar from './components/shared/TopProgressBar'; // Assuming you want to keep this
+    import ChatSidebar from './components/shared/ChatSidebar';
 
-    // Page imports are not strictly needed here if router config is in main.tsx,
-    // but keeping them doesn't harm if App is the root element in router config.
-    // import HomePage from './pages/HomePage';
-    // import AuthPage from './pages/AuthPage';
-    // import ArticlesListPage from './pages/ArticlesListPage';
-    // import ArticleDetailPage from './pages/ArticleDetailPage';
-    // import AdminPage from './pages/AdminPage';
-    // import UserProfilePage from './pages/UserProfilePage';
-
-    import { useAuth } from './contexts/AuthContext';
+    import HomePage from './pages/HomePage';
+    import AuthPage from './pages/AuthPage';
+    import ArticlesListPage from './pages/ArticlesListPage';
+    import ArticleDetailPage from './pages/ArticleDetailPage';
+    import AdminPage from './pages/AdminPage';
+    import UserProfilePage from './pages/UserProfilePage';
+    import { useAuth } from './contexts/AuthContext'; // useAuth might be needed for sticky buttons
 
     const FOOTER_HEIGHT = '60px';
     const STICKY_BUTTON_SIZE = '60px';
@@ -35,13 +31,9 @@
     function App() {
       const [showSavedArticles, setShowSavedArticles] = useState(false);
       const [showChat, setShowChat] = useState(false);
-      const { isAuthenticated } = useAuth();
-      const navigation = useNavigation();
-      // const location = useLocation(); // No longer needed for CSSTransition key
-
-      // const nodeRef = useRef<HTMLDivElement>(null); // No longer needed
-
-      const isLoadingNavigation = navigation.state !== 'idle';
+      const { isAuthenticated } = useAuth(); // Get auth state for sticky buttons
+      // const navigation = useNavigation(); // Removed as TopProgressBar might be removed or simplified
+      // const isLoadingNavigation = navigation.state !== 'idle'; // Related to useNavigation
 
       const toggleSavedArticlesSidebar = () => { setShowSavedArticles(prev => !prev); if (showChat && !showSavedArticles) setShowChat(false); };
       const toggleChatSidebar = () => { setShowChat(prev => !prev); if (showSavedArticles && !showChat) setShowSavedArticles(false); };
@@ -61,8 +53,7 @@
 
       return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          {/* TopProgressBar is still here but will be removed in next step if desired */}
-          <TopProgressBar isLoading={isLoadingNavigation} />
+          {/* <TopProgressBar isLoading={isLoadingNavigation} />  // Consider if still needed without useNavigation */}
           <NavigationBar />
           <ToastContainerComponent />
 
@@ -70,11 +61,41 @@
             className="flex-grow-1"
             style={{
               paddingBottom: `calc(${FOOTER_HEIGHT} + ${STICKY_BUTTON_OFFSET} + ${STICKY_BUTTON_SIZE})`,
-              // position: 'relative' // No longer strictly needed for TransitionGroup
             }}
           >
-            {/* Removed TransitionGroup and CSSTransition */}
-            <Outlet /> {/* Child routes are rendered here directly */}
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/auth" element={<AuthPage />} />
+
+              {/* Protected Articles List Route */}
+              <Route
+                path="/articles"
+                element={
+                  <ProtectedRoute> {/* No specific roles, just needs authentication */}
+                    <ArticlesListPage />
+                  </ProtectedRoute>
+                }
+              />
+              {/* Individual articles can remain public, or also be protected if desired */}
+              <Route path="/articles/:articleId" element={<ArticleDetailPage />} />
+
+              <Route
+                path="/admin"
+                element={ <ProtectedRoute allowedRoles={['admin']}><AdminPage /></ProtectedRoute> }
+              />
+              <Route
+                path="/profile"
+                element={ <ProtectedRoute><UserProfilePage /></ProtectedRoute> }
+              />
+              <Route path="*" element={
+                <Container className="text-center py-5 d-flex flex-column justify-content-center align-items-center" style={{minHeight: `calc(100vh - 56px - ${FOOTER_HEIGHT})`}}>
+                  <h1 className="display-1 fw-bold">404</h1>
+                  <p className="fs-3"> <span className="text-danger">Opps!</span> Page not found.</p>
+                  <p className="lead">The page you’re looking for doesn’t exist.</p>
+                  <LinkContainer to="/"><Button variant="primary">Go Home</Button></LinkContainer>
+                </Container>
+              } />
+            </Routes>
           </main>
 
           {isAuthenticated && (
