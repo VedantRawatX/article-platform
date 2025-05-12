@@ -1,30 +1,33 @@
-/* File: src/index.css */
-/* Location: article-platform-frontend/src/index.css */
-/* Purpose: Minimal global styles. Bootstrap will handle most styling. */
+    /* File: src/index.css */
+    /* Purpose: Minimal global styles. Bootstrap will handle most styling. */
 
-body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-		sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	/* Bootstrap will set its own background and text colors.
-         You can override them here if needed, but it's often better
-         to use Bootstrap's theme customization options or utility classes. */
-}
-
-.sticky-saved-btn:hover {
-  box-shadow: 0 0 6px 16px rgba(0, 0, 0, 0.9);
-}
-
-/* You can add custom global overrides or additional styles here if Bootstrap doesn't cover them. */
-/* For example, if you want a specific global link color not covered by Bootstrap's default: */
-/*
-    a {
-      color: #0056b3;
+    :root {
+      --navbar-height: 70px; /* Adjust this to your actual navbar height + desired gap */
     }
-    a:hover {
-      color: #003d80;
+
+    body {
+      margin: 0;
+      /* Updated font-family to explicitly use Ubuntu only, then generic sans-serif */
+      font-family: 'Ubuntu', serif !important;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
+
+    /* Page Transition Animations - REMOVED */
+    /*
+    .page-transition-enter { ... }
+    .page-transition-enter-active { ... }
+    .page-transition-exit { ... }
+    .page-transition-exit-active { ... }
     */
+
+    /* Wrapper for the Outlet - REMOVED or no longer needed for transitions */
+    /*
+    .outlet-wrapper { ... }
+    */
+
+    /* Styling for the current page content - REMOVED or no longer needed for transitions */
+    /*
+    .page { ... }
+    */
+    

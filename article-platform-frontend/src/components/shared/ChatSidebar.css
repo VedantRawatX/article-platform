@@ -1,0 +1,22 @@
+    /* File: src/components/shared/ChatSidebar.css */
+
+    /* Make the Offcanvas background transparent */
+    .chat-sidebar-transparent .offcanvas-backdrop.show {
+        opacity: 0.2; /* Slightly dim the background but keep it mostly visible */
+    }
+
+    .chat-sidebar-transparent.offcanvas {
+        background-color: transparent !important;
+        border: none !important; /* Remove Offcanvas border if any */
+        box-shadow: none !important; /* Remove Offcanvas shadow if any, card will have its own */
+    }
+
+    /* Ensure the Card inside the transparent Offcanvas is visible and styled */
+    .chat-sidebar-transparent .card {
+        /* The card itself will have bg-white or bg-dark from Bootstrap themes */
+        /* Make sure it's opaque if the offcanvas is transparent */
+
+    }
+
+    /* Style for message bubbles if needed beyond Bootstrap classes */
+    /* For example, specific chat bubble tails - more complex CSS */

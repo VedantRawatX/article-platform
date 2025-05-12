@@ -1,0 +1,23 @@
+    /* File: src/components/shared/ToastContainerComponent.css */
+
+    .toast-container-sticky-below-nav.toast-container {
+      /* Ensure it's fixed relative to the viewport */
+      position: fixed !important; /* Override Bootstrap's default if necessary */
+      
+      /* Position top-center */
+      top: var(--navbar-height, 70px); /* Use CSS variable or fallback. Adjust 70px to your actual navbar height + desired gap */
+      left: 50%;
+      transform: translateX(-50%);
+      
+      z-index: 1056; /* Bootstrap's default for toasts is 1090, modals 1055. Ensure it's above content but below offcanvas if needed. */
+                      /* Default ToastContainer z-index is often high enough. */
+      
+      /* Add some padding if not using Bootstrap's p-3 on the container directly */
+      padding: 0.75rem;
+    }
+
+    /* Optional: Ensure toasts within this container stack nicely */
+    .toast-container-sticky-below-nav .toast {
+      /* margin-bottom: 0.5rem; // Already added mb-2 to Toast className */
+    }
+    

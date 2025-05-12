@@ -1,42 +1,214 @@
     /* File: src/components/NavigationBar.css */
 
     /* Custom Nav Link Styling */
-    .custom-nav-link .nav-link, /* Target Nav.Link rendered by react-bootstrap */
-    .custom-nav-link.nav-link, /* Target Nav.Link directly if custom-nav-link is on it */
-    .navbar-brand.custom-nav-brand, /* Target Navbar.Brand */
-    .custom-nav-dropdown-item.dropdown-item /* Target NavDropdown.Item */ {
-      transition: color 0.2s ease-in-out;
-      font-weight: 500; /* Slightly bolder links */
+    .custom-nav-link .nav-link, /* Targets Nav.Link component when custom-nav-link is on a parent */
+    .custom-nav-link.nav-link, /* Targets Nav.Link component that also has custom-nav-link */
+    .navbar-brand.custom-nav-brand {
+      transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      font-weight: 500;
+      display: flex; 
+      align-items: center; /* Vertically center content within the link/item */
+      /* Ensure consistent vertical padding for all direct nav items for alignment */
+      /* padding-top: 0.5rem; Bootstrap's default for .nav-link */
+      /* padding-bottom: 0.5rem; Bootstrap's default for .nav-link */
     }
 
-    /* Hover effect for Nav.Link, Navbar.Brand, and NavDropdown.Item */
+    /* Ensure dropdown items themselves and their content are left-aligned */
+    .custom-nav-dropdown-item.dropdown-item {
+      transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      font-weight: 500;
+      display: flex; 
+      align-items: center; 
+      justify-content: flex-start !important;
+      text-align: left !important;
+      width: 100%; 
+    }
+    .dropdown-menu .nav-dropdown-header {
+        text-align: left !important;
+        justify-content: flex-start !important;
+        padding-left: 1rem; 
+        padding-right: 1rem;
+    }
+
+    /* Hover effect for Nav.Link text, Navbar.Brand text */
     .custom-nav-link .nav-link:hover,
     .custom-nav-link.nav-link:hover,
     .navbar-brand.custom-nav-brand:hover,
     .custom-nav-dropdown-item.dropdown-item:hover {
-      color: #34d399 !important; /* Bright green (Tailwind's emerald-400) */
-      /* background-color: rgba(52, 211, 153, 0.1); Optional: subtle background on hover for dropdown items */
+      color: #34d399 !important;
+    }
+    
+    /* Hover effect for the icon circle within the icon dropdown toggle */
+    .user-dropdown-icon-toggle.nav-item.dropdown > .nav-link.dropdown-toggle:hover .user-icon-circle {
+        background-color: rgba(52, 211, 153, 0.25) !important;
+        border-color: rgba(52, 211, 153, 0.6) !important;
+    }
+    .user-dropdown-icon-toggle.nav-item.dropdown > .nav-link.dropdown-toggle:hover .user-icon-circle svg {
+        color: #34d399 !important;
+    }
+    /* Hover effect for the text-based dropdown toggle (the <a> tag itself) */
+    .custom-nav-link.d-lg-none.nav-item.dropdown > .nav-link.dropdown-toggle:hover {
+         color: #34d399 !important;
     }
 
     /* Active link styling */
     .custom-nav-link .nav-link.active,
     .custom-nav-link.nav-link.active {
-      color: #34d399 !important; /* Bright green for active links */
-      font-weight: 700; /* Make active link even bolder */
+      color: #34d399 !important;
+      font-weight: 700;
+    }
+    
+    /* Styling for the user icon circle in the dropdown toggle - DEFAULT STATE */
+    .user-icon-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background-color: rgba(52, 211, 153, 0.1) !important;
+      border: 1px solid rgba(52, 211, 153, 0.3) !important;
+      transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      line-height: 1; 
+      padding: 0;
+      overflow: hidden;
     }
 
-    /* Ensure dropdown toggle also gets hover if needed, though .custom-nav-link on NavDropdown might cover it */
-    /* Also, if the dropdown itself should indicate an active child, that's more complex and often handled by JS or specific parent classes */
-    .custom-nav-link .dropdown-toggle:hover,
-    .custom-nav-link.nav-link.active .dropdown-toggle, /* If the NavDropdown (as a .custom-nav-link) is considered active */
-    .custom-nav-link .dropdown-toggle.active /* If Bootstrap adds .active to the toggle itself */ {
+    .user-icon-circle svg {
+        color: rgba(255,255,255,.75) !important;
+        width: 20px;
+        height: 20px;
+        transition: color 0.2s ease-in-out;
+    }
+
+    /* Hide the default dropdown caret ONLY for the icon version of the dropdown */
+    .user-dropdown-icon-toggle.nav-item.dropdown > .dropdown-toggle::after {
+      display: none !important;
+    }
+
+    /* Styles for when the icon dropdown is OPEN */
+    .user-dropdown-icon-toggle.nav-item.dropdown.show > .nav-link .user-icon-circle {
+      background-color: rgba(52, 211, 153, 0.25) !important;
+      border-color: rgba(52, 211, 153, 0.6) !important;
+    }
+    .user-dropdown-icon-toggle.nav-item.dropdown.show > .nav-link .user-icon-circle svg {
+        color: #34d399 !important;
+    }
+    /* Styles for when the text dropdown is OPEN */
+    .custom-nav-link.d-lg-none.nav-item.dropdown.show > .nav-link.dropdown-toggle {
         color: #34d399 !important;
     }
 
-
-    /* Adjust padding for dropdown items if needed */
+    /* Adjust padding for dropdown items */
     .custom-nav-dropdown-item.dropdown-item {
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
+    }
+
+    /* Ensure the NavDropdown toggle itself aligns items center */
+    /* For icon toggle (large screens) */
+    .user-dropdown-icon-toggle.nav-item.dropdown > .nav-link.dropdown-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center; 
+        padding: 0.3rem 0.5rem !important; /* Reduced padding specifically for the icon toggle */
+        background-color: transparent !important;
+        color: rgba(255,255,255,.55) !important;
+        transition: color 0.2s ease-in-out;
+        line-height: 1; /* Helps ensure consistent height with icon */
+    }
+     /* For text toggle (responsive - smaller screens) */
+    .custom-nav-link.d-lg-none.nav-item.dropdown > .nav-link.dropdown-toggle {
+        display: flex; 
+        align-items: center;
+        justify-content: flex-start !important; 
+        padding-top: 0.5rem !important;    /* Bootstrap's default nav-link vertical padding */
+        padding-bottom: 0.5rem !important; /* Bootstrap's default nav-link vertical padding */
+        padding-left: 1rem !important;     /* px-3 equivalent */
+        padding-right: 1rem !important;    /* px-3 equivalent */
+        color: rgba(255,255,255,.55) !important;
+        transition: color 0.2s ease-in-out;
+        width: 100%; 
+        text-align: left !important; 
+    }
+
+    /* When navbar is collapsed (hamburger menu is open): */
+    .navbar-collapse.show .navbar-nav,
+    .navbar-collapse.collapsing .navbar-nav {
+        align-items: flex-start !important; 
+    }
+
+    /* General Nav.Link styling in collapsed menu */
+    .navbar-collapse .navbar-nav .nav-item .nav-link {
+        justify-content: flex-start !important;
+        text-align: left !important;
+        width: 100%; 
+        padding-left: 1rem !important;  /* px-3 equivalent */
+        padding-right: 1rem !important; /* px-3 equivalent */
+        /* Vertical padding is usually handled by Bootstrap's .nav-link, ensure it's consistent */
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    /* Specific styling for dropdown toggle in collapsed menu (already covered by the rule above and .custom-nav-link.d-lg-none...) */
+
+
+    /* Ensure dropdown menu itself is not centered when navbar is collapsed */
+    .navbar-collapse .dropdown-menu {
+        text-align: left !important;
+        margin-left: 0 !important; 
+        margin-right: 0 !important;
+    }
+    
+    /* --- MODIFICATION: FULL-WIDTH COLLAPSED DROPDOWN MENU --- */
+    @media (max-width: 991.98px) {
+        .navbar-collapse.show .nav-item.dropdown,
+        .navbar-collapse.collapsing .nav-item.dropdown {
+            width: 100% !important;
+            min-width: 100% !important;
+        }
+
+        .navbar-collapse.show .nav-item.dropdown .dropdown-menu,
+        .navbar-collapse.collapsing .nav-item.dropdown .dropdown-menu {
+            position: static !important; 
+            float: none !important;
+            width: 100% !important;
+            min-width: 100% !important;
+            margin-top: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding-top: 0; 
+            padding-bottom: 0;
+        }
+
+        .navbar-collapse.show .nav-item.dropdown .dropdown-menu .dropdown-item,
+        .navbar-collapse.collapsing .nav-item.dropdown .dropdown-menu .dropdown-item {
+            padding-left: 1.5rem !important; 
+            padding-right: 1rem !important;
+        }
+        .navbar-collapse.show .nav-item.dropdown .dropdown-menu .dropdown-item:hover,
+        .navbar-collapse.collapsing .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
+            color: #34d399 !important;
+        }
+
+        .navbar-collapse.show .nav-item.dropdown .dropdown-menu .dropdown-header,
+        .navbar-collapse.collapsing .nav-item.dropdown .dropdown-menu .dropdown-header {
+             padding-left: 1.5rem !important;
+             padding-right: 1rem !important;
+        }
+
+        .navbar-collapse.show .nav-item.dropdown .dropdown-menu .dropdown-divider,
+        .navbar-collapse.collapsing .nav-item.dropdown .dropdown-menu .dropdown-divider {
+            margin-left: 1rem; 
+            margin-right: 1rem;
+        }
+    }
+    
+    /* Navbar Collapse Animation (Bootstrap default is usually good) */
+    .navbar-collapse.collapsing {
+      transition: height 0.3s ease !important;
+    }
+
+    .navbar-toggler{
+      border: 1px rgba(0,0,0,0) !important;
     }
     

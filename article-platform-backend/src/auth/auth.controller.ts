@@ -1,160 +1,110 @@
-// src/auth/auth.controller.ts
-import {
-  Controller,
-  Post,
-  Body,
-  HttpCode,
-  HttpStatus,
-  UseGuards,
-  Get,
-  Request, // To access the request object, especially for request.user
-} from '@nestjs/common';
-import { AuthService, AuthResponse } from './auth.service';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { JwtAuthGuard } from './guards/jwt-auth.guard'; // For protecting routes with JWT
-import { LocalAuthGuard } from './guards/local-auth.guard';
+    // src/auth/auth.controller.ts
+    import {
+      Controller,
+      Post,
+      Body,
+      HttpCode,
+      HttpStatus,
+      UseGuards,
+      Get,
+      Request,
+      Patch, // Import Patch
+    } from '@nestjs/common';
+    import { AuthService, AuthResponse } from './auth.service';
+    import { UsersService } from '../users/users.service'; // Import UsersService
+    import { RegisterUserDto } from './dto/register-user.dto';
+    import { LoginUserDto } from './dto/login-user.dto';
+    import { UpdateProfileDto } from '../users/dto/update-profile.dto'; // Import DTO
+    import { ChangePasswordDto } from '../users/dto/change-password.dto'; // Import DTO
+    import { LocalAuthGuard } from './guards/local-auth.guard';
+    import { JwtAuthGuard } from './guards/jwt-auth.guard';
+    import {
+      ApiTags,
+      ApiOperation,
+      ApiResponse,
+      ApiBody,
+      ApiBearerAuth,
+    } from '@nestjs/swagger';
+    import { User } from '../users/entities/user.entity';
 
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBody,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
-import { User } from '../users/entities/user.entity'; // For typing response
+    @ApiTags('auth & profile') // Updated tag to include profile
+    @Controller('auth') // Base path remains /auth for login/register
+    export class AuthController {
+      constructor(
+        private readonly authService: AuthService,
+        private readonly usersService: UsersService, // Inject UsersService
+        ) {}
 
-@ApiTags('auth')
-@Controller('auth')
-export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+      @Post('register')
+      @HttpCode(HttpStatus.CREATED)
+      @ApiOperation({ summary: 'Register a new user' })
+      @ApiBody({ type: RegisterUserDto })
+      @ApiResponse({ status: HttpStatus.CREATED, description: 'User registered and logged in.', schema: { example: { accessToken: 'jwt.token', user: { id: 'uuid', email: 'user@example.com', role: 'user' }}}})
+      async register(@Body() registerUserDto: RegisterUserDto): Promise<AuthResponse> {
+        return this.authService.register(registerUserDto);
+      }
 
-  // --- USER REGISTRATION ---
-  @Post('register')
-  @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({
-    summary: 'Register a new user',
-    description:
-      'Creates a new user account and returns an access token along with user details.',
-  })
-  @ApiBody({ type: RegisterUserDto })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'User successfully registered and logged in.',
-    // Define a type for the response if you have one, e.g., AuthResponse
-    // For now, let's assume it returns an object with accessToken and user
-    schema: {
-      example: {
-        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        user: {
-          id: 'uuid',
-          email: 'user@example.com',
-          role: 'user',
-          firstName: 'Test',
-          lastName: 'User',
-        },
-      },
-    },
-  })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Invalid input data (e.g., email format, password length).',
-  })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
-    description: 'Email already exists.',
-  })
-  @ApiResponse({
-    status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: 'Internal server error during registration.',
-  })
-  async register(
-    @Body() registerUserDto: RegisterUserDto,
-  ): Promise<AuthResponse> {
-    return this.authService.register(registerUserDto);
-  }
+      @UseGuards(LocalAuthGuard)
+      @Post('login')
+      @HttpCode(HttpStatus.OK)
+      @ApiOperation({ summary: 'Log in an existing user' })
+      @ApiBody({ type: LoginUserDto })
+      @ApiResponse({ status: HttpStatus.OK, description: 'User logged in.', schema: { example: { accessToken: 'jwt.token', user: { id: 'uuid', email: 'user@example.com', role: 'user' }}}})
+      @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Invalid credentials.' })
+      async login(@Request() req: any): Promise<AuthResponse> {
+        // req.user is populated by LocalAuthGuard
+        // authService.login now directly uses this user to sign the token
+        return this.authService.login(req.user); // Pass the validated user from LocalStrategy
+      }
 
-  // --- USER LOGIN ---
-  // The LocalAuthGuard will trigger the LocalStrategy
-  // If LocalStrategy.validate() is successful, request.user will be populated
-  // Then, the login method in AuthService is called.
-  @UseGuards(LocalAuthGuard) // Apply LocalAuthGuard here
-  @Post('login')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({
-    summary: 'Log in an existing user',
-    description:
-      'Authenticates a user with email and password, and returns an access token along with user details.',
-  })
-  @ApiBody({ type: LoginUserDto }) // Document the expected request body
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'User successfully logged in.',
-    schema: {
-      example: {
-        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        user: { id: 'uuid', email: 'user@example.com', role: 'user' },
-      },
-    },
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'Invalid credentials.',
-  })
-  @ApiResponse({
-    status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: 'Internal server error during login.',
-  })
-  async login(@Request() req: any): Promise<AuthResponse> {
-    // req.user is populated by LocalAuthGuard/LocalStrategy upon successful validation
-    // We then pass this user to the authService.login method, which expects a DTO.
-    // However, our AuthService.login method is designed to re-validate and then sign.
-    // A more direct approach after LocalAuthGuard is to directly use the user from req.user
-    // to generate the token, as validation has already occurred.
-    // Let's adjust AuthService.login or how we call it.
-    // For now, we'll rely on the fact that LocalAuthGuard has validated the user
-    // and authService.login will sign a token for req.user.
-    // The `authService.login` method actually expects a LoginUserDto.
-    // A cleaner way is to have LocalAuthGuard populate req.user, and then
-    // a separate method in AuthService just signs the token for the user object.
-    // Let's modify authService.login slightly or add a new method.
-    // For simplicity for now, we'll call the existing login method,
-    // which will re-validate, but it's a bit redundant after LocalAuthGuard.
-    // A better pattern: LocalAuthGuard validates, then a handler calls jwtService.sign directly with req.user.
+      // --- USER PROFILE MANAGEMENT ---
+      // The /auth/profile endpoint already exists for GET, let's keep it for consistency
+      // Or you could move these to a /users/me or /profile controller
 
-    // The `authService.login` method as currently written in Step 10 expects a LoginUserDto.
-    // However, `req.user` (populated by `LocalAuthGuard`) is already the validated user object (Omit<User, 'password'>).
-    // So, we should directly use `req.user` to generate the token.
-    // Let's assume `authService.login` is adapted or we call a different method like `authService.generateJwt(req.user)`
-    // For now, I will call a slightly modified login that can accept the user object.
-    // Or, we can just pass the DTO again, and it will be re-validated by authService.login -> authService.validateUser
-    // This is what the original NestJS auth example often does.
-    return this.authService.login(req.body as LoginUserDto); // req.body contains the LoginUserDto
-    // A more streamlined approach if LocalAuthGuard has already validated:
-    // return this.authService.generateTokenForUser(req.user); // Assuming generateTokenForUser exists in AuthService
-  }
+      @UseGuards(JwtAuthGuard)
+      @Get('profile')
+      @ApiBearerAuth()
+      @ApiOperation({ summary: 'Get current user profile' })
+      @ApiResponse({ status: HttpStatus.OK, description: 'Current user profile data.', type: User }) // Consider a UserResponseDto without password
+      @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized.' })
+      async getProfile(@Request() req: any): Promise<Omit<User, 'password'>> {
+        // req.user is populated by JwtStrategy.validate() with Omit<User, 'password'>
+        return req.user;
+      }
 
-  // --- GET USER PROFILE (Protected Route Example) ---
-  @UseGuards(JwtAuthGuard) // Protect this route with JwtAuthGuard
-  @Get('profile')
-  @ApiBearerAuth() // Indicates in Swagger that this endpoint requires a Bearer token
-  @ApiOperation({
-    summary: 'Get current user profile',
-    description:
-      'Retrieves the profile of the currently authenticated user (requires JWT).',
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Current user profile data.',
-    type: User, // Or a specific Profile DTO without password
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'Unauthorized. No or invalid token provided.',
-  })
-  async getProfile(@Request() req: any): Promise<Omit<User, 'password'>> {
-    // req.user is populated by JwtStrategy.validate()
-    // It already contains the user object (Omit<User, 'password'>)
-    return req.user;
-  }
-}
+      @UseGuards(JwtAuthGuard)
+      @Patch('profile') // Using PATCH for partial updates to profile
+      @ApiBearerAuth()
+      @ApiOperation({ summary: 'Update current user profile' })
+      @ApiBody({ type: UpdateProfileDto })
+      @ApiResponse({ status: HttpStatus.OK, description: 'Profile updated successfully.', type: User }) // Consider UserResponseDto
+      @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized.' })
+      @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Invalid input data.' })
+      @ApiResponse({ status: HttpStatus.CONFLICT, description: 'Email already in use.' })
+      async updateProfile(
+        @Request() req: any,
+        @Body() updateProfileDto: UpdateProfileDto,
+      ): Promise<Omit<User, 'password'>> {
+        const userId = req.user.id;
+        return this.usersService.updateProfile(userId, updateProfileDto);
+      }
+
+      @UseGuards(JwtAuthGuard)
+      @Post('profile/change-password') // Specific route for changing password
+      @HttpCode(HttpStatus.OK) // Or 204 No Content if not returning anything
+      @ApiBearerAuth()
+      @ApiOperation({ summary: 'Change current user password' })
+      @ApiBody({ type: ChangePasswordDto })
+      @ApiResponse({ status: HttpStatus.OK, description: 'Password changed successfully.' })
+      @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized or incorrect current password.' })
+      @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Invalid input data (e.g., new password too short).' })
+      async changePassword(
+        @Request() req: any,
+        @Body() changePasswordDto: ChangePasswordDto,
+      ): Promise<{ message: string }> { // Return a simple success message
+        const userId = req.user.id;
+        await this.usersService.changePassword(userId, changePasswordDto);
+        return { message: 'Password changed successfully.' };
+      }
+    }
+    

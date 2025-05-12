@@ -7,11 +7,12 @@
     import { ArticlesModule } from './articles/articles.module';
     import { Article } from './articles/entities/article.entity';
     import { UserArticleLike } from './articles/entities/user-article-like.entity';
-    import { UserSavedArticle } from './articles/entities/user-saved-article.entity'; // Import new entity
+    import { UserSavedArticle } from './articles/entities/user-saved-article.entity';
     import { UsersModule } from './users/users.module';
     import { User } from './users/entities/user.entity';
     import { AuthModule } from './auth/auth.module';
     import { SeedModule } from './seed/seed.module';
+    import { ChatModule } from './chat/chat.module'; // Import ChatModule
 
     @Module({
       imports: [
@@ -28,8 +29,8 @@
             username: configService.get<string>('DATABASE_USER', 'your_db_user'),
             password: configService.get<string>('DATABASE_PASSWORD', 'your_db_password'),
             database: configService.get<string>('DATABASE_NAME', 'article_platform_db'),
-            entities: [Article, User, UserArticleLike, UserSavedArticle], // <--- ADD UserSavedArticle HERE
-            synchronize: configService.get<boolean>('DATABASE_SYNCHRONIZE', true), // Ensure this is true for dev to create the table
+            entities: [Article, User, UserArticleLike, UserSavedArticle],
+            synchronize: configService.get<boolean>('DATABASE_SYNCHRONIZE', true),
             logging: configService.get<boolean>('DATABASE_LOGGING', true),
           }),
           inject: [ConfigService],
@@ -38,6 +39,7 @@
         UsersModule,
         AuthModule,
         SeedModule,
+        ChatModule, // Add ChatModule here
       ],
       controllers: [AppController],
       providers: [AppService, Logger],
