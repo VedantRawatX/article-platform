@@ -55,8 +55,10 @@ git clone https://github.com/VedantRawatX/article-platform.git
 
 # Backend Setup
 
+> Navigate to the source directory
+
 ```bash
-cd <your-repository-url>/article-platform-backend
+cd article-platform-backend
 # Installation Navigate to the backend project directory and install dependencies:cd article-platform-backend
 npm install
 
@@ -113,7 +115,7 @@ npm run start:dev
 
 # Frontend Setup
 
-## Installation - Navigate to the frontend project directory and install dependencies:cd ../article-platform-frontend # Assuming you are in the backend directory
+> Navigate to the source directory
 
 ```bash 
 npm install
