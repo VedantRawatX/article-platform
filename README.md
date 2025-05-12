@@ -50,7 +50,12 @@ The Article Platform is a full-stack application featuring a NestJS backend and 
 > (If you haven't already, clone the repository that contains the `article-platform-backend` directory.)
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/VedantRawatX/article-platform.git
+```
+
+# Backend Setup
+
+```bash
 cd <your-repository-url>/article-platform-backend
 # Installation Navigate to the backend project directory and install dependencies:cd article-platform-backend
 npm install
@@ -59,13 +64,12 @@ npm install
 npm install --save-dev ts-node tsconfig-paths
 ```
 
-
-# File: article-platform-backend/.env
-
 Environment Configuration (.env): Create a .env file in the root of the article-platform-backend directory. Copy the contents of .env.example (if provided) or use the template below and fill in your details:
 
 ```bash
 # Backend .env configuration
+# File: article-platform-backend/.env
+
 # Application Port
 PORT=3000
 
@@ -107,7 +111,8 @@ npm run start:dev
 
 > The server will typically run on http://localhost:3000 (or the PORT specified in your .env).Frontend Setup 
 
-# (React)Follow these steps to set up and run the React frontend.
+# Frontend Setup
+
 ## Installation - Navigate to the frontend project directory and install dependencies:cd ../article-platform-frontend # Assuming you are in the backend directory
 
 ```bash 
