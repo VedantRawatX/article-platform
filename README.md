@@ -37,25 +37,6 @@ The Article Platform is a full-stack application featuring a NestJS backend and 
     * Save/Unsave articles with a dedicated sidebar for saved articles.
 * **API Management:** Backend endpoints documented with Swagger/OpenAPI.
 
-## Technical Stack
-
-**Backend:**
-* Framework: NestJS 11
-* Language: TypeScript
-* Database: PostgreSQL
-* ORM: TypeORM
-* Authentication: JWT (Passport.js)
-* Validation: class-validator, class-transformer
-* API Documentation: Swagger (@nestjs/swagger)
-
-**Frontend:**
-* Framework: React 19
-* Bundler: Vite
-* Language: TypeScript
-* UI Library: React Bootstrap
-* Routing: React Router DOM v6
-* State Management: React Context API (for Auth and Toasts)
-* API Calls: Fetch API
 
 ## Prerequisites
 
@@ -64,31 +45,27 @@ The Article Platform is a full-stack application featuring a NestJS backend and 
 * PostgreSQL server installed and running.
 * Git (for cloning the repository)
 
-## Project Structure
-
-It's assumed you have two main directories, one for the backend and one for the frontend, typically in the same parent folder:
-
-article-platform/├── article-platform-backend/   # NestJS backend└── article-platform-frontend/  # React frontend
-## Backend Setup (NestJS)
-
-Follow these steps to set up and run the backend server.
-
 ### Cloning the Repository
 
-(If you haven't already, clone the repository that contains the `article-platform-backend` directory.)
+> (If you haven't already, clone the repository that contains the `article-platform-backend` directory.)
+
 ```bash
 git clone <your-repository-url>
 cd <your-repository-url>/article-platform-backend
-InstallationNavigate to the backend project directory and install dependencies:cd article-platform-backend
+# Installation Navigate to the backend project directory and install dependencies:cd article-platform-backend
 npm install
-# or
-# yarn install
-Install ts-node and tsconfig-paths globally or as dev dependencies if not already present (for the seeder script):npm install --save-dev ts-node tsconfig-paths
-# or
-# yarn add --dev ts-node tsconfig-paths
-Environment Configuration (.env)Create a .env file in the root of the article-platform-backend directory. Copy the contents of .env.example (if provided) or use the template below and fill in your details:# Backend .env configuration
+
+# Install ts-node and tsconfig-paths globally or as dev dependencies if not already present (for the seeder script)
+npm install --save-dev ts-node tsconfig-paths
+```
+
+
 # File: article-platform-backend/.env
 
+Environment Configuration (.env): Create a .env file in the root of the article-platform-backend directory. Copy the contents of .env.example (if provided) or use the template below and fill in your details:
+
+```bash
+# Backend .env configuration
 # Application Port
 PORT=3000
 
@@ -109,30 +86,52 @@ JWT_EXPIRES_IN=1h # Example: 1 hour. Use '7d' for 7 days, etc.
 
 # Frontend URL (for CORS configuration)
 FRONTEND_URL=http://localhost:5173 # Adjust if your frontend runs on a different port
+```
 
-# Seeder Control (No longer used for automatic seeding on startup)
-# RUN_SEEDER=false
-Important:Replace placeholder values (like your_db_username, your_db_password, YOUR_VERY_STRONG_AND_UNIQUE_SECRET_KEY_HERE) with your actual credentials and secrets.Ensure the DATABASE_USER has privileges to create databases if DATABASE_NAME doesn't exist and DATABASE_SYNCHRONIZE=true. Otherwise, create the database manually.Database SetupEnsure your PostgreSQL server is running and accessible with the credentials provided in the .env file. If DATABASE_SYNCHRONIZE=true, NestJS/TypeORM will attempt to create the database schema (tables) when the application starts or when the seeder runs for the first time.Running the Database SeederThe seeder script populates the database with initial data (admin user, sample users, and articles). It will clear existing articles and non-admin users before seeding.To run the seeder:npm run seed
-# or
-# yarn seed
-Make sure the backend server is stopped before running the seeder if it involves schema changes or you want to avoid potential conflicts.Running the Backend ServerTo start the backend development server:npm run start:dev
-# or
-# yarn start:dev
-The server will typically run on http://localhost:3000 (or the PORT specified in your .env).Frontend Setup (React)Follow these steps to set up and run the React frontend.InstallationNavigate to the frontend project directory and install dependencies:cd ../article-platform-frontend # Assuming you are in the backend directory
-# or cd path/to/article-platform-frontend
+# Running the Database Seeder
+## The seeder script populates the database with initial data (admin user, sample users, and articles). It will clear existing articles and non-admin users before seeding.To run the seeder:npm 
+
+```bash
+npm run seed
+```
+
+> Make sure the backend server is stopped before running the seeder if it involves schema changes or you want to avoid potential conflicts.
+
+## Running the Backend Server
+
+To start the backend development server:
+
+```bash
+npm run start:dev
+```
+
+> The server will typically run on http://localhost:3000 (or the PORT specified in your .env).Frontend Setup 
+
+# (React)Follow these steps to set up and run the React frontend.
+## Installation - Navigate to the frontend project directory and install dependencies:cd ../article-platform-frontend # Assuming you are in the backend directory
+
+```bash 
 npm install
-# or
-# yarn install
-Install uuid and its types if not already present (for the Toast context):npm install uuid
+
+# Install uuid and its types if not already present (for the Toast context):npm install uuid
 npm install --save-dev @types/uuid
-# or
-# yarn add uuid
-# yarn add --dev @types/uuid
-Environment Configuration (.env)Create a .env file in the root of the article-platform-frontend directory. Add the following, adjusting the URL if your backend runs on a different port:# Frontend .env configuration
+```
+
+Environment Configuration (.env): Create a .env file in the root of the article-platform-frontend directory. Add the following, adjusting the URL if your backend runs on a different port:
+
+```bash
+# Frontend .env configuration
 # File: article-platform-frontend/.env
 
 VITE_API_BASE_URL=http://localhost:3000/api
-Note: Vite requires environment variables to be prefixed with VITE_ to be exposed to the frontend code.Running the Frontend ServerTo start the frontend development server:npm run dev
-# or
-# yarn dev
-The frontend will typically run on http://localhost:5173 (Vite's default) or another port if specified. Open this URL in your browser.Available ScriptsBackend (article-platform-backend/package.json)npm run start:dev: Starts the backend server in development mode with auto-reload.npm run build: Compiles the TypeScript code to JavaScript.npm run start:prod: Starts the backend server from the compiled build (for production).npm run seed: Runs the database seeder script.npm run lint: Lints the codebase.npm run test: Runs unit tests.Frontend (article-platform-frontend/package.json)npm run dev: Starts the frontend development server (Vite).npm run build: Builds the frontend application for production.npm run preview: Serves the production build locally for preview.npm run lint: Lints the codebase.API DocumentationOnce the backend server is running, Swagger API documentation is available at:`
+```
+> Note: Vite requires environment variables to be prefixed with VITE_ to be exposed to the frontend code.
+
+## Running the Frontend Server
+To start the frontend development server:
+
+```bash
+npm run dev
+```
+
+> The frontend will typically run on http://localhost:5173 
