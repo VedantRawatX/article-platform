@@ -36,7 +36,7 @@
       }
 
       return (
-        <Container className="py-45">
+        <Container className="py-5">
           <Row className="justify-content-center text-center mb-5">
             <Col md={8}>
               <h1 className="display-4 fw-bold">Welcome to Articulate</h1>
