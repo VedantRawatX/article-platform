@@ -35,8 +35,8 @@ The Article Platform is a full-stack application featuring a NestJS backend and 
     * Individual article view.
     * Like/Unlike articles.
     * Save/Unsave articles with a dedicated sidebar for saved articles.
-    * Chat Module for WebSocket Practice as well as Across-Platform Chat.
-    * Manage Profile Dashboard
+* **User Management:** Manage Profile Dashboard
+* **Socket:** Chat Module for WebSocket Practice as well as Across-Platform Chat.
 * **API Management:** Backend endpoints documented with Swagger/OpenAPI.
 
 
