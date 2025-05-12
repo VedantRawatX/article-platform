@@ -2,7 +2,7 @@
     /* Purpose: Minimal global styles. Bootstrap will handle most styling. */
 
     :root {
-      --navbar-height: 70px; /* Adjust this to your actual navbar height + desired gap */
+      --navbar-height: 75.5px;
     }
 
     body {

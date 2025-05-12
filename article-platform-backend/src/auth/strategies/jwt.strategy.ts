@@ -51,16 +51,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * @throws UnauthorizedException if user not found or any other validation fails.
    */
   async validate(payload: JwtPayload): Promise<Omit<User, 'password'>> {
-    // The payload contains { username (email), sub (id), role, iat, exp }
-    // We trust the payload at this point because the token's signature has been verified.
-
-    // You can choose to return just the payload, or fetch the full user object
-    // from the database for more up-to-date information.
-    // Fetching the user ensures the user still exists and hasn't been, e.g., deactivated.
-
-    console.log(
-      `JwtStrategy: Validating JWT for user ID ${payload.sub} (email: ${payload.username})`,
-    ); // For debugging
 
     const user = await this.usersService.findById(payload.sub); // Use 'sub' which is the user ID
 

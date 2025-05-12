@@ -5,7 +5,7 @@
     import Nav from 'react-bootstrap/Nav'; // For Card.Title link styling
     import { LinkContainer } from 'react-router-bootstrap';
     import { type Article } from '../../services/ApiService'; // Adjust path as needed
-    import { Eye, Heart } from 'react-bootstrap-icons'; // Added Heart icon
+    import { HeartFill } from 'react-bootstrap-icons'; // Added Heart icon
 
     interface ArticleCardProps {
       article: Article;
@@ -17,7 +17,7 @@
       const excerpt = article.body.substring(0, 100) + (article.body.length > 100 ? '...' : '');
 
       return (
-        <Card className={`h-100 shadow-sm ${className || ''}`}>
+        <Card className={`h-100 shadow ${className || ''}`}>
           {/* 1. Image is clickable */}
           <LinkContainer to={`/articles/${article.id}`}>
             <Nav.Link className="p-0" style={{ lineHeight: '0' }}>
@@ -56,15 +56,7 @@
                   <Button variant="outline-primary" size="sm">Read More</Button>
               </LinkContainer>
               <div className="d-flex align-items-center text-muted small">
-                  {/* Assuming article.likes is the total like count.
-                      If you have a separate view count, you'd use that for the Eye icon.
-                      For now, using article.likes for both as per previous structure.
-                  */}
-                  <Heart size={16} className="me-1 text-danger" /> {article.likes}
-                  {/* If you want to keep a separate "views" counter, you'd need a views property on the article object.
-                      For example:
-                      <Eye size={16} className="ms-2 me-1" /> {article.views || 0}
-                  */}
+                  <HeartFill size={16} className="me-2 text-danger" /> {article.likes}
               </div>
             </div>
           </Card.Body>

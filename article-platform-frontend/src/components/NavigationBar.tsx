@@ -84,18 +84,18 @@
                 >
                   Home
                 </Nav.Link>
-                <Nav.Link
+
+                {isLoading ? (
+                  <Nav.Link disabled className="custom-nav-link px-3">Loading...</Nav.Link>
+                ) : isAuthenticated && user ? (
+                  <>
+                                  <Nav.Link
                   onClick={() => handleNavClick('/articles')}
                   active={location.pathname.startsWith('/articles')}
                   className="custom-nav-link px-3" // px-3 for horizontal padding
                 >
                   Articles
                 </Nav.Link>
-
-                {isLoading ? (
-                  <Nav.Link disabled className="custom-nav-link px-3">Loading...</Nav.Link>
-                ) : isAuthenticated && user ? (
-                  <>
                     {/* Dropdown for larger screens (icon toggle) */}
                     <NavDropdown
                       title={iconDropdownToggle}

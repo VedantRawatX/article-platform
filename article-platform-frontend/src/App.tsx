@@ -43,11 +43,11 @@
         borderRadius: '50%', zIndex: 1031,
       };
       const savedArticlesButtonStyle: React.CSSProperties = {
-        ...stickyButtonStyleBase, bottom: `calc(${STICKY_BUTTON_OFFSET} + ${FOOTER_HEIGHT} + 10px)`,
+        ...stickyButtonStyleBase, bottom: `calc(${STICKY_BUTTON_OFFSET})`,
         left: STICKY_BUTTON_OFFSET,
       };
       const chatButtonStyle: React.CSSProperties = {
-        ...stickyButtonStyleBase, bottom: `calc(${STICKY_BUTTON_OFFSET} + ${FOOTER_HEIGHT} + 10px)`,
+        ...stickyButtonStyleBase, bottom: `calc(${STICKY_BUTTON_OFFSET})`,
         right: STICKY_BUTTON_OFFSET,
       };
 
@@ -58,10 +58,7 @@
           <ToastContainerComponent />
 
           <main
-            className="flex-grow-1"
-            style={{
-              paddingBottom: `calc(${FOOTER_HEIGHT} + ${STICKY_BUTTON_OFFSET} + ${STICKY_BUTTON_SIZE})`,
-            }}
+            className="flex-grow"
           >
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -108,10 +105,6 @@
               <ChatDotsFill size={24} />
             </Button>
           )}
-
-          <Navbar bg="dark" variant="dark" fixed="bottom" className="p-3 text-center" style={{ zIndex: 1030 }}>
-            <Container><div className="w-100"><p className="mb-0 text-white-50">&copy; {new Date().getFullYear()} Article Platform.</p></div></Container>
-          </Navbar>
 
           <SavedArticlesSidebar show={showSavedArticles} handleClose={toggleSavedArticlesSidebar} />
           <ChatSidebar show={showChat} handleClose={toggleChatSidebar} />
