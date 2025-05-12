@@ -1,0 +1,42 @@
+    /* File: src/components/NavigationBar.css */
+
+    /* Custom Nav Link Styling */
+    .custom-nav-link .nav-link, /* Target Nav.Link rendered by react-bootstrap */
+    .custom-nav-link.nav-link, /* Target Nav.Link directly if custom-nav-link is on it */
+    .navbar-brand.custom-nav-brand, /* Target Navbar.Brand */
+    .custom-nav-dropdown-item.dropdown-item /* Target NavDropdown.Item */ {
+      transition: color 0.2s ease-in-out;
+      font-weight: 500; /* Slightly bolder links */
+    }
+
+    /* Hover effect for Nav.Link, Navbar.Brand, and NavDropdown.Item */
+    .custom-nav-link .nav-link:hover,
+    .custom-nav-link.nav-link:hover,
+    .navbar-brand.custom-nav-brand:hover,
+    .custom-nav-dropdown-item.dropdown-item:hover {
+      color: #34d399 !important; /* Bright green (Tailwind's emerald-400) */
+      /* background-color: rgba(52, 211, 153, 0.1); Optional: subtle background on hover for dropdown items */
+    }
+
+    /* Active link styling */
+    .custom-nav-link .nav-link.active,
+    .custom-nav-link.nav-link.active {
+      color: #34d399 !important; /* Bright green for active links */
+      font-weight: 700; /* Make active link even bolder */
+    }
+
+    /* Ensure dropdown toggle also gets hover if needed, though .custom-nav-link on NavDropdown might cover it */
+    /* Also, if the dropdown itself should indicate an active child, that's more complex and often handled by JS or specific parent classes */
+    .custom-nav-link .dropdown-toggle:hover,
+    .custom-nav-link.nav-link.active .dropdown-toggle, /* If the NavDropdown (as a .custom-nav-link) is considered active */
+    .custom-nav-link .dropdown-toggle.active /* If Bootstrap adds .active to the toggle itself */ {
+        color: #34d399 !important;
+    }
+
+
+    /* Adjust padding for dropdown items if needed */
+    .custom-nav-dropdown-item.dropdown-item {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    

@@ -1,0 +1,30 @@
+/* File: src/index.css */
+/* Location: article-platform-frontend/src/index.css */
+/* Purpose: Minimal global styles. Bootstrap will handle most styling. */
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	/* Bootstrap will set its own background and text colors.
+         You can override them here if needed, but it's often better
+         to use Bootstrap's theme customization options or utility classes. */
+}
+
+.sticky-saved-btn:hover {
+  box-shadow: 0 0 6px 16px rgba(0, 0, 0, 0.9);
+}
+
+/* You can add custom global overrides or additional styles here if Bootstrap doesn't cover them. */
+/* For example, if you want a specific global link color not covered by Bootstrap's default: */
+/*
+    a {
+      color: #0056b3;
+    }
+    a:hover {
+      color: #003d80;
+    }
+    */
