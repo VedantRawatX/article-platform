@@ -62,7 +62,7 @@
       );
 
       return (
-        <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className="shadow-sm py-3">
+        <Navbar variant="dark" expand="lg" sticky="top" className="custom-bg shadow-sm py-2">
           <Container fluid>
             <Navbar.Brand
               onClick={() => handleNavClick('/')}
